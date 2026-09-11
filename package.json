@@ -1,0 +1,57 @@
+{
+  "name": "sylo-fieldbrain",
+  "version": "0.1.0",
+  "description": "FieldBrain — shared shop knowledge (projects, docs, brains, maintenance notes)",
+  "type": "module",
+  "keywords": [
+    "pi-package"
+  ],
+  "scripts": {
+    "build:ui": "vite build --config ui/vite.config.ts && node scripts/postbuild-ui.mjs"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/index.ts"
+    ],
+    "skills": [
+      "./skills/fieldbrain"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.84.2"
+  },
+  "dependencies": {
+    "typebox": "^1.1.24"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.4.3"
+  },
+  "license": "MIT",
+  "gitHead": "f05700bce9bf8ef8574894f24a8a3fa71da11d61",
+  "dist": {
+    "integrity": "sha512-62UYi0DcgbL1c5CI0v2ZDmUxM9jeAORPNFfn4ge6ycO7WegIwFYZv7twa0KiJ6gKAIXPUD8gq2WTk2U8AQeIFg==",
+    "shasum": "376e8c8eaa305754fc4de17f12a43e84bc29411e",
+    "tarball": "https://registry.npmjs.org/sylo-fieldbrain/-/sylo-fieldbrain-0.1.0.tgz",
+    "fileCount": 83,
+    "unpackedSize": 567514,
+    "signatures": [
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEUCIH6ZoxJ/s3llpwRyDU6G4rAFNg8LG4F+6OIkN3DitnjcAiEA0QK5v38raDGObRdfClmz/ekj+UDQj7nGXGFxyCa/u6s="
+      }
+    ]
+  },
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "yeti-trix",
+      "email": "spencer.current@gmail.com"
+    }
+  ]
+}
