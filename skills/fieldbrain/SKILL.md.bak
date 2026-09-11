@@ -1,0 +1,83 @@
+---
+name: logicscout
+description: LogicScout — shared PLC project knowledge, document/brain libraries, maintenance logs, AI diagnostics. Requires sylo-logicscout (+ sylo-logicforge for L5X/.acd tooling).
+metadata:
+  sylo:
+    category: plc
+    icon: search
+routes:
+  - id: logicscout
+    title: LogicScout
+    icon: search
+    nav_section: domain
+    entry: routes/logicscout/index.html
+    fallback: routes/logicscout/fallback.md
+route_protocol_version: 0
+---
+
+# LogicScout
+
+Shared shop knowledge and PLC diagnostics inside Sylo. **Postgres** holds projects, document library, brain libraries, and maintenance logs. **SQLite** (Sylo host) keeps private chats.
+
+**Tracker:** `features_tracker/active/2026-07-04_14-56-00_sylo_logicscout_package_migration.md`
+
+## Prerequisites
+
+1. **sylo-logicscout** optional package enabled (Capability manager).
+2. **PostgreSQL** reachable (local server or LAN address in settings / `~/.sylo/logicscout/database_config.json`).
+3. **pgvector** on that Postgres server (semantic search; guided setup if missing).
+4. **Ollama** for embeddings and diagnostics (default `http://127.0.0.1:11434`).
+5. **sylo-logicforge** for `.acd` → L5X and parse — do not duplicate those tools here.
+
+## First run
+
+1. `logicscout_status` — confirm package + config paths.
+2. `logicscout_db_migrate` — once on the shared database (usually the server machine).
+3. `logicscout_db_check` — verify connection, pgvector, schema version on every install.
+
+## Tools
+
+| Tool | When |
+|------|------|
+| `logicscout_status` | Start — paths and config |
+| `logicscout_db_migrate` | First-time DB setup or after package upgrade |
+| `logicscout_db_check` | After migrate; repeat when connection fails |
+| `logicscout_project_list` | List shared PLC projects |
+| `logicscout_project_create` | Create a new project (+ brain folder scaffold) |
+| `logicscout_log_create` | Record a maintenance log entry |
+| `logicscout_log_update` | Update a log entry (previous version saved to revisions) |
+| `logicscout_log_delete` | Soft-delete a log entry (restorable) |
+| `logicscout_log_restore` | Restore a soft-deleted log entry |
+| `logicscout_log_revisions` | List prior versions of a log entry |
+| `logicscout_log_search` | Find past maintenance entries by fault, tag, or text |
+| `logicscout_document_list` | List global library or project-attached documents |
+| `logicscout_document_attach` | Attach existing doc or register a new file (bytes stored in Postgres) |
+| `logicscout_document_ingest` | Ingest PDF/text: extract, chunk, index, embed (pymupdf + Ollama) |
+| `logicscout_brain_read` | Read markdown from project or global brain (Postgres canonical) |
+| `logicscout_brain_write` | Write or append brain markdown (revisions on replace) |
+| `logicscout_brain_delete` | Soft-delete a brain doc (restorable) |
+| `logicscout_brain_restore` | Restore a soft-deleted brain doc |
+| `logicscout_brain_revisions` | List prior versions of a brain doc |
+| `logicscout_search` | Hybrid search (keyword + pgvector when available) |
+| `logicscout_l5x_explore` | Parse an L5X via LogicForge; program/routine summary + rung snippets |
+| `logicscout_find_logic` | Diagnostic search over indexed L5X (optional brain/doc hits) |
+
+## Diagnostics
+
+1. **L5X on disk:** `logicscout_l5x_explore` with `l5x_path` (and optional `filter` for program/routine/tag substring). Uses **LogicForge** `parse_l5x.py` — never duplicate the parser here.
+2. **Indexed project knowledge:** `logicscout_find_logic` with `project_id` + symptom/query. Searches `search_index` for rung, routine, program, tag hits; pass `include_docs: true` for brain/document context.
+3. **Pair with LogicForge** for `.acd` export and full parse pipelines (`logicforge_*` tools).
+4. **Maintenance context:** `logicscout_log_search` before/after diagnostics to surface past faults on the same equipment.
+
+## Data split
+
+| Data | Storage |
+|------|---------|
+| Chats, health, operator prefs | Sylo SQLite (private) |
+| Projects, docs, brains, maintenance logs | Postgres (shared; schema v3: content in DB, soft delete + revisions) |
+
+## L5X / diagnostics
+
+Use **logicforge** tools for `.acd` export and L5X parse. LogicScout diagnostics: `logicscout_l5x_explore` (raw L5X) and `logicscout_find_logic` (indexed project). See **Diagnostics** above.
+
+Reference implementation (frozen): `C:\Users\YetiTrix\Documents\GitHub\LogicScout`
