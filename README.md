@@ -30,3 +30,10 @@ Source: `packages/sylo-fieldbrain/ui/` (React + TypeScript). Built by `npm run b
 | `fieldbrain_db_check` | Postgres + pgvector + schema version check |
 | `fieldbrain_db_migrate` | Apply Alembic migrations |
 | `fieldbrain_search` | Hybrid search over brains, docs, maintenance notes |
+
+
+## Install
+
+`pi install npm:sylo-fieldbrain` — or from the **Capability manager → Pi.dev package catalog** in Sylo (it appears in the Sylo packages strip).
+
+Releases publish automatically from GitHub Actions (npm trusted publishing, with provenance): bump `version` in `package.json`, commit, tag `vX.Y.Z`, push the tag.
