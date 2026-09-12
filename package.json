@@ -1,6 +1,6 @@
 {
   "name": "sylo-fieldbrain",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "FieldBrain — shared shop knowledge (projects, docs, brains, maintenance notes)",
   "type": "module",
   "keywords": [
